@@ -15,6 +15,7 @@ local launched = false
 local loopspeed = 2 --default speed
 local IsLooped = false
 local canServerhop = false
+local AutoTrinkets= false
 --Tabs
 local boted = Window:NewTab("Bot")
 local FileSave = Window:NewTab("Save File")
@@ -126,6 +127,10 @@ end)
 botedsection:NewToggle("Server Hop On/Off","()",function(state)
     canServerhop = state
  end)
+--auto trinkets fim
+ botedsection:NewToggle("Auto Trinkets","()",function(state)
+    AutoTrinkets = state
+ end)
 --server hop
 botedsection:NewButton("Server Hop", "Server Hop", function()
     block_random_player()
@@ -169,6 +174,18 @@ game:GetService("RunService").RenderStepped:Connect(function()
             launched = true
             wait(loopspeed)
             farm()
+        end
+	end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+	if AutoTrinkets then
+        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())do
+            if v.ClassName == "ClickDetector" then
+                local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                if distance < 13 then
+                    fireclickdetector(v)
+                end
+            end
         end
 	end
 end)
