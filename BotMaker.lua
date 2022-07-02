@@ -128,7 +128,7 @@ botedsection:NewToggle("Server Hop On/Off","()",function(state)
     canServerhop = state
  end)
 --auto trinkets fim
- botedsection:NewToggle("Auto Trinkets","()",function(state)
+ botedsection:NewToggle("Auto Pickup","()",function(state)
     AutoTrinkets = state
  end)
 --server hop
