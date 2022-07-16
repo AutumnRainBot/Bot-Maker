@@ -156,7 +156,6 @@ function farm()
     launched = false
     if ConfigTable.canServerhop then
         servhop()
-        wait(9e9)
     end
     wait(2)
 end
