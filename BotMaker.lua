@@ -91,7 +91,7 @@ end)
 
 --server hopping esssentials
 local function servhop()
-    local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/momo11122/Server-Hop/main/ServerHop.lua")()
+    local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/LGDMomo/Server-Hop/main/ServerHop.Lua")()
     module:Teleport(game.PlaceId)
 end
 
@@ -164,7 +164,6 @@ botedsection:NewToggle("Bot Then Server Hop","()",function(state)
  end)
 --server hop
 botedsection:NewButton("Server Hop", "Server Hop", function()
-    block_random_player()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
  end)
 --export file name
@@ -221,8 +220,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
         if not launched then
             deb = true
             farm()
-            wait()
-            deb = false
         end
     end
 end)
