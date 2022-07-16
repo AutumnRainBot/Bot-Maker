@@ -91,7 +91,7 @@ end)
 
 --server hopping esssentials
 local function servhop()
-    local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/LeoKholYt/roblox/main/lk_serverhop.lua")()
+    local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/momo11122/Server-Hop/main/ServerHop.lua")()
     module:Teleport(game.PlaceId)
 end
 
