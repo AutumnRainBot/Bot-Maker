@@ -1,7 +1,7 @@
 repeat task.wait() until game:IsLoaded()
-
+wait(3)
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Bot Maker Universal :p By Momo.#2706 ", "BloodTheme")
+local Window = Library.CreateLib("Bot Maker Universal By Momo.#2706", "BloodTheme")
 --nofall fim
 --game.Players.LocalPlayer.Character.CharacterHandler.Remotes.ApplyFallDamage:Destroy()
 --main tab
@@ -156,6 +156,7 @@ function farm()
     launched = false
     if ConfigTable.canServerhop then
         servhop()
+        wait(9e9)
     end
     wait(2)
 end
@@ -244,13 +245,13 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
 	end
 end)
+local deb = false
 --loop for server hop bot (momo was here :p)
 game:GetService("RunService").RenderStepped:Connect(function()
-	if ConfigTable.ServerHopPos then
+	if ConfigTable.ServerHopPos and not deb then
         if not launched then
-            launched = true
+            deb = true
             farm()
-            wait(9e9)
         end
     end
 end)
