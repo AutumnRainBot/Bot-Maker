@@ -90,7 +90,7 @@ end)
 
 
 --server hopping esssentials
-local function servhop()
+function servhop()
     local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/LGDMomo/Server-Hop/main/ServerHop.Lua")()
     module:Teleport(game.PlaceId)
 end
