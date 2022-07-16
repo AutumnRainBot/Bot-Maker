@@ -1,7 +1,7 @@
 repeat task.wait() until game:IsLoaded()
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Bot Gucci 💰", "BloodTheme")
+local Window = Library.CreateLib("Bot Maker Universal :p By Momo.#2706 ", "BloodTheme")
 --nofall fim
 --game.Players.LocalPlayer.Character.CharacterHandler.Remotes.ApplyFallDamage:Destroy()
 --main tab
