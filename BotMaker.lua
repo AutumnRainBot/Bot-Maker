@@ -87,42 +87,12 @@ paramssection:NewSlider("Tween Speed", "", 750, 1, function(s)
     tweenspeed = s
 end)
 
---block player function for server hopping
-local function block_random_player()
-    local block_player 
-    local players_list = game:GetService("Players"):GetPlayers()
 
-    for index = 1, #players_list do
-        local target_player = players_list[index]
-
-        if target_player.Name ~= game.Players.LocalPlayer.Name then
-            block_player = target_player
-            break
-        end
-    end
-
-    game:GetService("StarterGui"):SetCore("PromptBlockPlayer", block_player)
-
-    local container_frame = game:GetService("CoreGui").RobloxGui:WaitForChild("PromptDialog"):WaitForChild("ContainerFrame")
-
-    local confirm_button = container_frame:WaitForChild("ConfirmButton")
-    local confirm_button_text = confirm_button:WaitForChild("ConfirmButtonText")
-    
-    if confirm_button_text.Text == "Block" then  
-        wait()
-        
-        local confirm_position = confirm_button.AbsolutePosition
-        
-        game:GetService("VirtualInputManager"):SendMouseButtonEvent(confirm_position.X + 10, confirm_position.Y + 45, 0, true, game, 0)
-        task.wait()
-        game:GetService("VirtualInputManager"):SendMouseButtonEvent(confirm_position.X + 10, confirm_position.Y + 45, 0, false, game, 0)
-    end
-end
 
 --server hopping esssentials
 local function servhop()
-    --block_random_player()
-    game:GetService("TeleportService"):Teleport(game.PlaceId)
+    local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/LeoKholYt/roblox/main/lk_serverhop.lua")()
+    module:Teleport(game.PlaceId)
 end
 
 local TweenPlayer
