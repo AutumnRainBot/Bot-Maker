@@ -88,7 +88,7 @@ paramssection:NewSlider("Tween Speed", "", 750, 1, function(s)
 end)
 
 --block player function for server hopping
-block_random_player = function()
+local function block_random_player()
     local block_player 
     local players_list = game:GetService("Players"):GetPlayers()
 
@@ -120,14 +120,14 @@ block_random_player = function()
 end
 
 --server hopping esssentials
-servhop = function()
-    block_random_player()
+local function servhop()
+    --block_random_player()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
 end
 
 local TweenPlayer
 --main functions
-function farm()
+local function farm()
     launched = true
     function tweenplayer(cframe)
         TweenPlayer = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(((cframe.p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)/tweenspeed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false), {CFrame = cframe})
@@ -251,6 +251,8 @@ game:GetService("RunService").RenderStepped:Connect(function()
         if not launched then
             deb = true
             farm()
+            wait()
+            deb = false
         end
     end
 end)
