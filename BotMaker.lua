@@ -30,7 +30,6 @@ local file_name = "config.json"
 local ConfigTable = {
     IsLooped = false,
     canServerhop = false,
-    AutoTrinkets= false,
     ServerHopPos = false,
     WaitTime = 0,
     TweenSpeed = 250,
@@ -155,12 +154,6 @@ paramssection:NewToggle("Bot Then Server Hop (Multiple Server)","nil",function(s
     ConfigTable.canServerhop = state
     saveSettings()
  end)
-
---auto trinkets fim
-paramssection:NewToggle("Auto Pickup (fim)","nil",function(state)
-    ConfigTable.AutoTrinkets = state
-    saveSettings()
- end)
 --server hop
 botedsection:NewButton("Server Hop","", function()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
@@ -220,19 +213,5 @@ game:GetService("RunService").RenderStepped:Connect(function()
             farm()
         end
     end
-end)
-
---auto pickup trinkets
-game:GetService("RunService").RenderStepped:Connect(function()
-	if ConfigTable.AutoTrinkets then
-        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())do
-            if v.ClassName == "ClickDetector" then
-                local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-                if distance < 13 then
-                    fireclickdetector(v)
-                end
-            end
-        end
-	end
 end)
 game.StarterGui:SetCore("SendNotification", {Title = "BOT MAKER";Text = "Loaded!";Duration = 3;})
