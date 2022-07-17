@@ -74,7 +74,7 @@ function saveSettings()
     end
 end
 
-
+loadSettings()
 --wait between
 paramssection:NewSlider("Wait time position","", 45, 1, function(s)
     ConfigTable.WaitTime = s
@@ -134,7 +134,7 @@ botedsection:NewButton("Save Position","",function()
 end)
 --start bot
 botedsection:NewButton("Load Position","",function()
-    loadSettings()
+    saveSettings()
     farm()
 end)
 --remove all position
@@ -143,7 +143,7 @@ botedsection:NewButton("Clear All Position","",function()
     saveSettings()
 end)
 --loop
-paramssection:NewToggle("Loop Bot (Single Server)", "", function(state)
+local LoopedToggle = paramssection:NewToggle("Loop Bot (Single Server)", "", function(state)
    ConfigTable.IsLooped = state
    saveSettings()
 end)
