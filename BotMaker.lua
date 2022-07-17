@@ -1,4 +1,5 @@
 repeat wait() until game:IsLoaded()
+wait(2)
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Bot Maker Universal", "BloodTheme")
 --Page
@@ -35,7 +36,7 @@ function loadSettings()
         ConfigTable = HttpService:JSONDecode(readfile(file_name));
         --reading temp pos file for bot
         posi = {}
-        local file = readfile("TempPos"..".txt")
+        local file = readfile("TempPos"..".json")
         for word in string.gmatch(file, '([^a]+)') do
             table.insert(posi,(word))
         end
@@ -53,12 +54,12 @@ function saveSettings()
         json = HttpService:JSONEncode(ConfigTable);
         writefile(file_name, json);
     --saving position table in a separate file
-    writefile("TempPos"..".txt","")
+    writefile("TempPos"..".json","")
     for i , v in pairs(posi)do
         if i == #posi - 0 then 
-            appendfile("TempPos"..".txt",tostring(v).."a")
+            appendfile("TempPos"..".json",tostring(v).."a")
             else
-            appendfile("TempPos"..".txt",tostring(v).."a".."\n")
+            appendfile("TempPos"..".json",tostring(v).."a".."\n")
         end
     end
         else
@@ -171,12 +172,12 @@ filesection:NewTextBox("Import File Name", "FILE NAME", function(txt)
 end)
 --export file button
 filesection:NewButton("Export bot file","",function(txt)
-    writefile(tostring(savename)..".txt","")
+    writefile(tostring(savename)..".json","")
     for i , v in pairs(posi)do
         if i == #posi - 0 then 
-            appendfile(tostring(savename)..".txt",tostring(v).."a")
+            appendfile(tostring(savename)..".json",tostring(v).."a")
             else
-            appendfile(tostring(savename)..".txt",tostring(v).."a".."\n")
+            appendfile(tostring(savename)..".json",tostring(v).."a".."\n")
         end
     end
     saveSettings()
@@ -184,7 +185,7 @@ end)
 --import file bot config
 filesection:NewButton("Import Bot file","",function(txt)
     posi = {}
-    local file = readfile(tostring(bottxtimport)..".txt")
+    local file = readfile(tostring(bottxtimport)..".json")
     for word in string.gmatch(file, '([^a]+)') do
         table.insert(posi,(word))
     end
