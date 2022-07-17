@@ -1,12 +1,13 @@
 repeat task.wait() until game:IsLoaded()
 wait(3)
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Bot Maker Universal By Momo.#2706", "BloodTheme")
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
+local Window = Library.new("Bot Maker", 5013109572)
 --nofall fim
 --game.Players.LocalPlayer.Character.CharacterHandler.Remotes.ApplyFallDamage:Destroy()
 --main tab
-local main = Window:NewTab("Main")
-local mainsection = main:NewSection("Bot Maker Made By Momo.#2706")
+local main = Window:addPage("Main", 5012544693)
+
+local mainsection = main:addSection("Bot Maker Made By Momo.#2706")
 --variables
 local waittime = 0
 local tweenspeed = 200 --default speed
@@ -66,24 +67,24 @@ end
 loadSettings()
 
 --Tabs
-local boted = Window:NewTab("Bot")
-local FileSave = Window:NewTab("Save File")
+local boted = Window:addPage("Bot")
+local FileSave = Window:addPage("Save File")
 
 --Sections
-local botedsection = boted:NewSection("Make your own auto farm bot")
-local paramssection = boted:NewSection("Parameters")
+local botedsection = boted:addSection("Make your own auto farm bot")
+local paramssection = boted:addSection("Parameters")
 --for FileSave
-local filesection = FileSave:NewSection("Import/Export bot files")
+local filesection = FileSave:addSection("Import/Export bot files")
 --wait between
-paramssection:NewSlider("Wait time pos", "", 45, 1, function(s)
+paramssection:addSlider("Wait time pos",0, 45, 1, function(s)
     waittime = s
 end)
 --loop speed
-paramssection:NewSlider("Loop speed", "", 45, 1, function(s)
+paramssection:addSlider("Loop speed",0, 45, 1, function(s)
     loopspeed = s
 end)
 --tween speed 
-paramssection:NewSlider("Tween Speed", "", 750, 1, function(s)
+paramssection:addSlider("Tween Speed",0, 750, 1, function(s)
     tweenspeed = s
 end)
 
@@ -129,56 +130,56 @@ local function farm()
     wait(2)
 end
 --save position    
-botedsection:NewButton("Save Position","()",function()
+botedsection:addButton("Save Position",function()
     local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
     table.insert(posi,pos)
     saveSettings()
 end)
 --start bot
-botedsection:NewButton("Load Position","()",function()
+botedsection:addButton("Load Position",function()
     farm()
 end)
 --remove all position
-botedsection:NewButton("Clear All Pos","()",function()
+botedsection:addButton("Clear All Pos",function()
     posi = {}
     saveSettings()
 end)
 --loop
-botedsection:NewToggle("Loop Bot On/Off (Single Server)","()",function(state)
+botedsection:addToggle("Loop Bot On/Off (Single Server)", nil, function(state)
    ConfigTable.IsLooped = state
    saveSettings()
 end)
 
 --server hop mode
-botedsection:NewToggle("Bot Then Server Hop","()",function(state)
+botedsection:addToggle("Bot Then Server Hop",nil,function(state)
     ConfigTable.ServerHopPos = state
     ConfigTable.canServerhop = state
     saveSettings()
  end)
 
 --auto trinkets fim
- botedsection:NewToggle("Auto Pickup (fim)","()",function(state)
+ botedsection:addToggle("Auto Pickup (fim)",nil,function(state)
     ConfigTable.AutoTrinkets = state
     saveSettings()
  end)
 --server hop
-botedsection:NewButton("Server Hop", "Server Hop", function()
+botedsection:addButton("Server Hop", function()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
  end)
 --export file name
-filesection:NewTextBox("Export File Name", "", function(txt)
+filesection:addTextbox("Export File Name", "ENTER HERE FILE NAME", function(txt)
     savename = txt
     print(savename)
     saveSettings()
 end)
 --import file name
-filesection:NewTextBox("Import File Name", "", function(txt)
+filesection:addTextbox("Import File Name", "ENTER HERE FILE NAME", function(txt)
     bottxtimport = txt
     print(savename)
     saveSettings()
 end)
 --export file button
-filesection:NewButton("Export bot file", "", function(txt)
+filesection:addButton("Export bot file", function(txt)
     writefile(tostring(savename)..".txt","")
     for i , v in pairs(posi)do
         if i == #posi - 0 then 
@@ -190,7 +191,7 @@ filesection:NewButton("Export bot file", "", function(txt)
     saveSettings()
 end)
 --import file bot config
-filesection:NewButton("Import Bot file", "", function(txt)
+filesection:addButton("Import Bot file",function(txt)
     posi = {}
     local file = readfile(tostring(bottxtimport)..".txt")
     for word in string.gmatch(file, '([^a]+)') do
@@ -238,3 +239,4 @@ game:GetService("RunService").RenderStepped:Connect(function()
 end)
 --save settings on join
 saveSettings()
+Window:SelectPage(venyx.pages[1], true)
