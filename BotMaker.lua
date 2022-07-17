@@ -32,8 +32,8 @@ local ConfigTable = {
     canServerhop = false,
     ServerHopPos = false,
     WaitTime = 0,
-    TweenSpeed = 250,
-    LoopSpeed = 1.5,
+    TweenSpeed = 200,
+    LoopSpeed = 1,
 }
 --load config function
 function loadSettings()
@@ -74,7 +74,6 @@ function saveSettings()
     end
 end
 
-loadSettings()
 
 --wait between
 paramssection:NewSlider("Wait time position","", 45, 1, function(s)
@@ -101,7 +100,7 @@ function farm()
     function tweenplayer(cframe)
         TweenPlayer = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(((cframe.p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)/ConfigTable.TweenSpeed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false), {CFrame = cframe})
         TweenPlayer:Play()
-        TweenPlayer.Completed:Wait() wait(ConfigTable.WaitTime)
+        TweenPlayer.Completed:Wait() wait(1)
     end
     for i,v in pairs(posi) do
         print(v)
@@ -135,6 +134,7 @@ botedsection:NewButton("Save Position","",function()
 end)
 --start bot
 botedsection:NewButton("Load Position","",function()
+    loadSettings()
     farm()
 end)
 --remove all position
