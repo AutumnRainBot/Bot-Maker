@@ -19,8 +19,6 @@ local botedsection = boted:NewSection("Make your own auto farm bot")
 local paramssection = boted:NewSection("Parameters")
 local filesection = FileSave:NewSection("Import/Export bot files")
 --variables
-local waittime = 0
-local tweenspeed = 200 --default speed
 local savename = "exported bot config"
 local bottxtimport = nil
 local launched = false
@@ -34,6 +32,9 @@ local ConfigTable = {
     canServerhop = false,
     AutoTrinkets= false,
     ServerHopPos = false,
+    WaitTime = 0,
+    TweenSpeed = 250,
+    LoopSpeed = 1.5,
 }
 --load config function
 function loadSettings()
@@ -78,15 +79,15 @@ loadSettings()
 
 --wait between
 paramssection:NewSlider("Wait time position","", 45, 1, function(s)
-    waittime = s
+    ConfigTable.WaitTime = s
 end)
 --loop speed
 paramssection:NewSlider("Loop speed","", 45, 1, function(s)
-    loopspeed = s
+    ConfigTable.LoopSpeed = s
 end)
 --tween speed 
 paramssection:NewSlider("Tween Speed","", 750, 1, function(s)
-    tweenspeed = s
+    ConfigTable.TweenSpeed = s
 end)
 
 --server hopping esssentials
@@ -96,12 +97,12 @@ end
 
 local TweenPlayer
 --main functions
-local function farm()
+function farm()
     launched = true
     function tweenplayer(cframe)
-        TweenPlayer = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(((cframe.p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)/tweenspeed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false), {CFrame = cframe})
+        TweenPlayer = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(((cframe.p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)/ConfigTable.TweenSpeed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false), {CFrame = cframe})
         TweenPlayer:Play()
-        TweenPlayer.Completed:Wait() wait(1)
+        TweenPlayer.Completed:Wait() wait(ConfigTable.WaitTime)
     end
     for i,v in pairs(posi) do
         print(v)
@@ -113,20 +114,19 @@ local function farm()
             tweenplayer(CFrame.new(unpack(v:split(", "))))
             else
                 tweenplayer(CFrame.new(v))
-                wait(waittime)
+                wait(ConfigTable.WaitTime)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
-                wait(waittime)
+                wait(ConfigTable.WaitTime)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
             end
-            wait(waittime)
+            wait(ConfigTable.WaitTime)
             game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
         end
     end
-    launched = false
     if ConfigTable.canServerhop then
         servhop()
     end
-    wait(2)
+    launched = false
 end
 --save position    
 botedsection:NewButton("Save Position","",function()
@@ -144,7 +144,7 @@ botedsection:NewButton("Clear All Position","",function()
     saveSettings()
 end)
 --loop
-botedsection:NewToggle("Loop Bot On/Off (Single Server)", "", function(state)
+botedsection:NewToggle("Loop Bot (Single Server)", "", function(state)
    ConfigTable.IsLooped = state
    saveSettings()
 end)
@@ -206,7 +206,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 	if ConfigTable.IsLooped then
 		if not launched then
             launched = true
-            wait(loopspeed)
+            wait(ConfigTable.LoopSpeed)
             farm()
         end
 	end
@@ -225,7 +225,7 @@ end)
 --auto pickup trinkets
 game:GetService("RunService").RenderStepped:Connect(function()
 	if ConfigTable.AutoTrinkets then
-        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())d
+        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())do
             if v.ClassName == "ClickDetector" then
                 local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
                 if distance < 13 then
