@@ -91,8 +91,7 @@ end)
 
 --server hopping esssentials
 function servhop()
-    local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/LGDMomo/Server-Hop/main/ServerHop.Lua")()
-    module:Teleport(game.PlaceId)
+    game:GetService("TeleportService"):Teleport(game.PlaceId)
 end
 
 local TweenPlayer
