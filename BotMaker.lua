@@ -1,13 +1,15 @@
-repeat task.wait() until game:IsLoaded()
-wait(3)
+repeat wait() until game:IsLoaded()
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
 local Window = Library.new("Bot Maker", 5013109572)
---nofall fim
---game.Players.LocalPlayer.Character.CharacterHandler.Remotes.ApplyFallDamage:Destroy()
---main tab
+--Page
 local main = Window:addPage("Main", 5012544693)
-
+local boted = Window:addPage("Bot")
+local FileSave = Window:addPage("Save File")
+--Section
 local mainsection = main:addSection("Bot Maker Made By Momo.#2706")
+local botedsection = boted:addSection("Make your own auto farm bot")
+local paramssection = boted:addSection("Parameters")
+
 --variables
 local waittime = 0
 local tweenspeed = 200 --default speed
@@ -65,14 +67,6 @@ function saveSettings()
 end
 --on join we load the config
 loadSettings()
-
---Tabs
-local boted = Window:addPage("Bot")
-local FileSave = Window:addPage("Save File")
-
---Sections
-local botedsection = boted:addSection("Make your own auto farm bot")
-local paramssection = boted:addSection("Parameters")
 --for FileSave
 local filesection = FileSave:addSection("Import/Export bot files")
 --wait between
@@ -88,7 +82,9 @@ paramssection:addSlider("Tween Speed",0, 750, 1, function(s)
     tweenspeed = s
 end)
 
-
+mainsection:addButton("Close", function()
+    game:GetService("CoreGui")["Bot Maker"]:Destroy()
+end)
 
 --server hopping esssentials
 function servhop()
@@ -202,41 +198,6 @@ filesection:addButton("Import Bot file",function(txt)
     end
     saveSettings()
 end)
-
---auto loop farm
-game:GetService("RunService").RenderStepped:Connect(function()
-	if ConfigTable.IsLooped then
-		if not launched then
-            launched = true
-            wait(loopspeed)
-            farm()
-        end
-	end
-end)
-local deb = false
---loop for server hop bot (momo was here :p)
-game:GetService("RunService").RenderStepped:Connect(function()
-	if ConfigTable.ServerHopPos and not deb then
-        if not launched then
-            deb = true
-            farm()
-        end
-    end
-end)
-
---auto pickup trinkets
-game:GetService("RunService").RenderStepped:Connect(function()
-	if ConfigTable.AutoTrinkets then
-        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())do
-            if v.ClassName == "ClickDetector" then
-                local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-                if distance < 13 then
-                    fireclickdetector(v)
-                end
-            end
-        end
-	end
-end)
+Window:SelectPage(Library.pages[1], true)
 --save settings on join
 saveSettings()
-Window:SelectPage(venyx.pages[1], true)
