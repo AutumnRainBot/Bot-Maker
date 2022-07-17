@@ -207,6 +207,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 	if ConfigTable.ServerHopPos and not deb then
         if not launched then
             deb = true
+            wait(2.5)
             farm()
         end
     end
