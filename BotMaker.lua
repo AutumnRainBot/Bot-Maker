@@ -26,6 +26,7 @@ local bottxtimport = nil
 local launched = false
 local loopspeed = 2 
 local posi = {}
+local TweenPlayer
 
 --config for save and load file temp pos file
 local file_name = "config.json"
@@ -78,6 +79,8 @@ function saveSettings()
 end
 --load config function
 loadSettings()
+--// sliders //--
+
 --wait between
 paramssection:NewSlider("Wait time position","", 45, 1, function(s)
     ConfigTable.WaitTime = s
@@ -91,105 +94,111 @@ paramssection:NewSlider("Tween Speed","", 750, 1, function(s)
     ConfigTable.TweenSpeed = s
 end)
 
---server hopping esssentials
+--// functions //--
 function servhop()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
 end
-
-local TweenPlayer
 --main functions
 function farm()
     launched = true
+    --the main function of tweening the player
     function tweenplayer(cframe)
+        --basic of tweening function for player only
         TweenPlayer = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(((cframe.p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)/ConfigTable.TweenSpeed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false), {CFrame = cframe})
         TweenPlayer:Play()
-        TweenPlayer.Completed:Wait() wait(1)
+        TweenPlayer.Completed:Wait() wait(1)--wait for tween to finish
     end
-    if posi ~= nil then
-        for i , v in pairs(posi)do
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-            if type(v) =="string" then
-            tweenplayer(CFrame.new(unpack(v:split(", "))))
+    --Tween the player to the position
+    if posi ~= nil then--check if there is a position table
+        for i , v in pairs(posi)do--loop through the table
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true--anchor the character
+            if type(v) =="string" then--check if the value is a string
+            tweenplayer(CFrame.new(unpack(v:split(", "))))--if it is a string, convert it to a table and tween the player
             else
-                tweenplayer(CFrame.new(v))
-                wait(ConfigTable.WaitTime)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+                tweenplayer(CFrame.new(v))--if it is not a string, tween the player
+                wait(ConfigTable.WaitTime)--obviously wait before next position
+                game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character
             end
-            wait(ConfigTable.WaitTime)
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+            wait(ConfigTable.WaitTime)--obviously wait before next position
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character in case of error
         end
     end
-    if ConfigTable.canServerhop then
-        servhop()
+    if ConfigTable.canServerhop then--here we check if the bot can serverhop (we used the toggle button)
+        servhop()--server hop '-'
     end
-    launched = false
+    launched = false--set the bot to not launched so we can now press the button again
 end
+
+--// buttons //--
 --save position    
 botedsection:NewButton("Save Position","",function()
-    local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    table.insert(posi,pos)
-    saveSettings()
+    local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position --take our current position
+    table.insert(posi,pos)--save it into a table
+    saveSettings()--save the table into a table that will be saved into a file later
 end)
 --start bot
 botedsection:NewButton("Load Position","",function()
-    if not launched then
-    saveSettings()
-    farm()
+    if not launched then --check because if not we could just spam load position and it goes crazy x)
+    saveSettings()--in case of error while saving config
+    farm()--actual bot function that tween our position
     end
 end)
 --remove all position
 botedsection:NewButton("Clear All Position","",function()
-    posi = {}
-    saveSettings()
+    posi = {}--clearing table position (main table)
+    saveSettings()--save to config table our choice so we can load it later because we clear the table
 end)
---loop bot single server
-ToggleSection:NewToggle("Loop Bot (Single Server)", "", function(state)
-   ConfigTable.IsLooped = state
-   saveSettings()
-end)
-
---server hop mode
-ToggleSection:NewToggle("Bot Then Server Hop (Multiple Server)","nil",function(state)
-    ConfigTable.ServerHopPos = state
-    ConfigTable.canServerhop = state
-    saveSettings()
- end)
 --server hop
 botedsection:NewButton("Server Hop","", function()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
  end)
+
+--// toggles //--
+--loop bot single server
+ToggleSection:NewToggle("Loop Bot (Single Server)", "", function(state)
+   ConfigTable.IsLooped = state--toggle to loop bot (checked in the farm function)
+   saveSettings()--save to config table our choice so we can load it later
+end)
+
+--server hop mode
+ToggleSection:NewToggle("Bot Then Server Hop (Multiple Server)","nil",function(state)
+    ConfigTable.ServerHopPos = state--if this toggle on => set to the config table (farm fuction check if we checking it to server hop or not)
+    ConfigTable.canServerhop = state--same here ,i just could do juste one of them but i prefer to do both
+    saveSettings()--save to config table our choice so we can load it later
+ end)
+
 --export file name
 filesection:NewTextBox("Export File Name", "FILE NAME", function(txt)
-    savename = txt
+    savename = txt--set the name of the file to export
     saveSettings()
 end)
 --import file name
 filesection:NewTextBox("Import File Name", "FILE NAME", function(txt)
-    bottxtimport = txt
+    bottxtimport = txt--set the name of the file to import
     saveSettings()
 end)
 --export file button
 subFilesSection:NewButton("Export bot file","",function(txt)
-    writefile(tostring(savename)..".json","")
-    for i , v in pairs(posi)do
-        if i == #posi - 0 then 
-            appendfile(tostring(savename)..".json",tostring(v).."a")
+    writefile(tostring(savename)..".json","")--creating a file with the name we choosed
+    for i , v in pairs(posi)do --writing the position table in the file
+        if i == #posi - 0 then --if it is the last position
+            appendfile(tostring(savename)..".json",tostring(v).."a")--adding the position to the file without a jumping line
             else
-            appendfile(tostring(savename)..".json",tostring(v).."a".."\n")
+            appendfile(tostring(savename)..".json",tostring(v).."a".."\n")--adding the position to the file
         end
     end
-    print("Exported "..tostring(savename)..".json successfully")
-    saveSettings()
+    print("Exported "..tostring(savename)..".json successfully")--debugging print
+    saveSettings()--saving the config cuz we changed it
 end)
 --import file bot config
 subFilesSection:NewButton("Import Bot file","",function(txt)
-    posi = {}
-    local file = readfile(tostring(bottxtimport)..".json")
-    for word in string.gmatch(file, '([^a]+)') do
-        table.insert(posi,(word))
+    posi = {}--cleaing position table
+    local file = readfile(tostring(bottxtimport)..".json")--reading our bot path file
+    for word in string.gmatch(file, '([^a]+)') do -- loop in the file txt and split line every time it finds a "a"
+        table.insert(posi,(word))--instert the position into the main table
     end
-    print("Imported "..tostring(bottxtimport)..".json successfully")
-    saveSettings()
+    print("Imported "..tostring(bottxtimport)..".json successfully")--debug print
+    saveSettings()--save the fact we closed the button to save posi table
 end)
 --auto loop farm
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -207,7 +216,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 	if ConfigTable.ServerHopPos and not deb then
         if not launched then
             deb = true
-            wait(2.5)
+            wait(3.5)--when the game start it wait 3.5 sec before start tweening through all position :d
             farm()
         end
     end
