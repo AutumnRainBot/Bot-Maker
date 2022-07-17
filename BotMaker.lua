@@ -1,7 +1,14 @@
 repeat wait() until game:IsLoaded()
 wait(2)
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Bot Maker Universal", "BloodTheme")
+local Window = Library.CreateLib("Bot Maker Universal", colors)
+local colors = {
+    SchemeColor = Color3.fromRGB(0,255,255),
+    Background = Color3.fromRGB(0, 0, 0),
+    Header = Color3.fromRGB(0, 0, 0),
+    TextColor = Color3.fromRGB(255,255,255),
+    ElementColor = Color3.fromRGB(20, 20, 20)
+    }
 --Page
 local main = Window:NewTab("Main")
 local boted = Window:NewTab("Bot")
@@ -228,3 +235,4 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
 	end
 end)
+game.StarterGui:SetCore("SendNotification", {Title = "BOT MAKER";Text = "Loaded!";Duration = 3;})
