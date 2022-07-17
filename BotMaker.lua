@@ -3,12 +3,13 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHept
 local Window = Library.CreateLib("Bot Maker Universal", "BloodTheme")
 --Page
 local main = Window:NewTab("Main")
-local boted = Window:addPage("Bot")
-local FileSave = Window:addPage("Save File")
+local boted = Window:NewTab("Bot")
+local FileSave = Window:NewTab("Save File")
 --Section
 local mainsection = main:NewSection("Bot Maker Made By Momo.#2706")
 local botedsection = boted:NewSection("Make your own auto farm bot")
 local paramssection = boted:NewSection("Parameters")
+local filesection = FileSave:NewSection("Import/Export bot files")
 --variables
 local waittime = 0
 local tweenspeed = 200 --default speed
@@ -67,23 +68,17 @@ end
 
 loadSettings()
 
---for FileSave
-local filesection = FileSave:NewSection("Import/Export bot files")
 --wait between
-paramssection:NewSlider("Wait time position", 45, 1, function(s)
+paramssection:NewSlider("Wait time position","", 45, 1, function(s)
     waittime = s
 end)
 --loop speed
-paramssection:NewSlider("Loop speed", 45, 1, function(s)
+paramssection:NewSlider("Loop speed","", 45, 1, function(s)
     loopspeed = s
 end)
 --tween speed 
-paramssection:NewSlider("Tween Speed", 750, 1, function(s)
+paramssection:NewSlider("Tween Speed","", 750, 1, function(s)
     tweenspeed = s
-end)
-
-mainsection:NewButton("Close","", function()
-    game:GetService("CoreGui")["Bot Maker"]:Destroy()
 end)
 
 --server hopping esssentials
