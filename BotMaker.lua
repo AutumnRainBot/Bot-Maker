@@ -16,15 +16,18 @@ local FileSave = Window:NewTab("Save File")
 --Section
 local mainsection = main:NewSection("Bot Maker Made By Momo.#2706")
 local botedsection = boted:NewSection("Make your own auto farm bot")
+local ToggleSection = boted:NewSection("Toggles Options")
 local paramssection = boted:NewSection("Parameters")
-local filesection = FileSave:NewSection("Import/Export bot files")
---variables
+local filesection = FileSave:NewSection("Files Configurations")
+local subFilesSection = FileSave:NewSection("Import / Export Bot Files")
+--constants
 local savename = "exported bot config"
 local bottxtimport = nil
 local launched = false
-local loopspeed = 2 --default speed
+local loopspeed = 2 
 local posi = {}
---config for save and load file 
+
+--config for save and load file temp pos file
 local file_name = "config.json"
 --basic table for saving config
 local ConfigTable = {
@@ -70,10 +73,10 @@ function saveSettings()
         end
     end
         else
-            print("Error while saving co nfig")
+            print("Error while saving config")
     end
 end
-
+--load config function
 loadSettings()
 --wait between
 paramssection:NewSlider("Wait time position","", 45, 1, function(s)
@@ -102,9 +105,6 @@ function farm()
         TweenPlayer:Play()
         TweenPlayer.Completed:Wait() wait(1)
     end
-    for i,v in pairs(posi) do
-        print(v)
-    end
     if posi ~= nil then
         for i , v in pairs(posi)do
             game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
@@ -112,8 +112,6 @@ function farm()
             tweenplayer(CFrame.new(unpack(v:split(", "))))
             else
                 tweenplayer(CFrame.new(v))
-                wait(ConfigTable.WaitTime)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
                 wait(ConfigTable.WaitTime)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
             end
@@ -134,22 +132,24 @@ botedsection:NewButton("Save Position","",function()
 end)
 --start bot
 botedsection:NewButton("Load Position","",function()
+    if not launched then
     saveSettings()
     farm()
+    end
 end)
 --remove all position
 botedsection:NewButton("Clear All Position","",function()
     posi = {}
     saveSettings()
 end)
---loop
-local LoopedToggle = paramssection:NewToggle("Loop Bot (Single Server)", "", function(state)
+--loop bot single server
+ToggleSection:NewToggle("Loop Bot (Single Server)", "", function(state)
    ConfigTable.IsLooped = state
    saveSettings()
 end)
 
 --server hop mode
-paramssection:NewToggle("Bot Then Server Hop (Multiple Server)","nil",function(state)
+ToggleSection:NewToggle("Bot Then Server Hop (Multiple Server)","nil",function(state)
     ConfigTable.ServerHopPos = state
     ConfigTable.canServerhop = state
     saveSettings()
@@ -161,17 +161,15 @@ botedsection:NewButton("Server Hop","", function()
 --export file name
 filesection:NewTextBox("Export File Name", "FILE NAME", function(txt)
     savename = txt
-    print(savename)
     saveSettings()
 end)
 --import file name
 filesection:NewTextBox("Import File Name", "FILE NAME", function(txt)
     bottxtimport = txt
-    print(savename)
     saveSettings()
 end)
 --export file button
-filesection:NewButton("Export bot file","",function(txt)
+subFilesSection:NewButton("Export bot file","",function(txt)
     writefile(tostring(savename)..".json","")
     for i , v in pairs(posi)do
         if i == #posi - 0 then 
@@ -180,18 +178,17 @@ filesection:NewButton("Export bot file","",function(txt)
             appendfile(tostring(savename)..".json",tostring(v).."a".."\n")
         end
     end
+    print("Exported "..tostring(savename)..".json successfully")
     saveSettings()
 end)
 --import file bot config
-filesection:NewButton("Import Bot file","",function(txt)
+subFilesSection:NewButton("Import Bot file","",function(txt)
     posi = {}
     local file = readfile(tostring(bottxtimport)..".json")
     for word in string.gmatch(file, '([^a]+)') do
         table.insert(posi,(word))
     end
-    for i,v in pairs(posi)do
-        print(v)
-    end
+    print("Imported "..tostring(bottxtimport)..".json successfully")
     saveSettings()
 end)
 --auto loop farm
