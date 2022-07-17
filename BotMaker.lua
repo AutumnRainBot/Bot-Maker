@@ -225,7 +225,7 @@ end)
 --auto pickup trinkets
 game:GetService("RunService").RenderStepped:Connect(function()
 	if ConfigTable.AutoTrinkets then
-        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())do
+        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())d
             if v.ClassName == "ClickDetector" then
                 local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
                 if distance < 13 then
