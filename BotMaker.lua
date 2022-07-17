@@ -1,15 +1,14 @@
 repeat wait() until game:IsLoaded()
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
-local Window = Library.new("Bot Maker", 5013109572)
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Bot Maker Universal", "BloodTheme")
 --Page
-local main = Window:addPage("Main", 5012544693)
+local main = Window:NewTab("Main")
 local boted = Window:addPage("Bot")
 local FileSave = Window:addPage("Save File")
 --Section
-local mainsection = main:addSection("Bot Maker Made By Momo.#2706")
-local botedsection = boted:addSection("Make your own auto farm bot")
-local paramssection = boted:addSection("Parameters")
-
+local mainsection = main:NewSection("Bot Maker Made By Momo.#2706")
+local botedsection = boted:NewSection("Make your own auto farm bot")
+local paramssection = boted:NewSection("Parameters")
 --variables
 local waittime = 0
 local tweenspeed = 200 --default speed
@@ -19,7 +18,7 @@ local launched = false
 local loopspeed = 2 --default speed
 local posi = {}
 --config for save and load file 
-local file_name = "config.txt"
+local file_name = "config.json"
 --basic table for saving config
 local ConfigTable = {
     IsLooped = false,
@@ -62,27 +61,28 @@ function saveSettings()
         end
     end
         else
-            print("Error while saving config")
+            print("Error while saving co nfig")
     end
 end
---on join we load the config
+
 loadSettings()
+
 --for FileSave
-local filesection = FileSave:addSection("Import/Export bot files")
+local filesection = FileSave:NewSection("Import/Export bot files")
 --wait between
-paramssection:addSlider("Wait time pos",0, 45, 1, function(s)
+paramssection:NewSlider("Wait time position", 45, 1, function(s)
     waittime = s
 end)
 --loop speed
-paramssection:addSlider("Loop speed",0, 45, 1, function(s)
+paramssection:NewSlider("Loop speed", 45, 1, function(s)
     loopspeed = s
 end)
 --tween speed 
-paramssection:addSlider("Tween Speed",0, 750, 1, function(s)
+paramssection:NewSlider("Tween Speed", 750, 1, function(s)
     tweenspeed = s
 end)
 
-mainsection:addButton("Close", function()
+mainsection:NewButton("Close","", function()
     game:GetService("CoreGui")["Bot Maker"]:Destroy()
 end)
 
@@ -126,56 +126,56 @@ local function farm()
     wait(2)
 end
 --save position    
-botedsection:addButton("Save Position",function()
+botedsection:NewButton("Save Position","",function()
     local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
     table.insert(posi,pos)
     saveSettings()
 end)
 --start bot
-botedsection:addButton("Load Position",function()
+botedsection:NewButton("Load Position","",function()
     farm()
 end)
 --remove all position
-botedsection:addButton("Clear All Pos",function()
+botedsection:NewButton("Clear All Position","",function()
     posi = {}
     saveSettings()
 end)
 --loop
-botedsection:addToggle("Loop Bot On/Off (Single Server)", nil, function(state)
+botedsection:NewToggle("Loop Bot On/Off (Single Server)", "", function(state)
    ConfigTable.IsLooped = state
    saveSettings()
 end)
 
 --server hop mode
-botedsection:addToggle("Bot Then Server Hop",nil,function(state)
+botedsection:NewToggle("Bot Then Server Hop","nil",function(state)
     ConfigTable.ServerHopPos = state
     ConfigTable.canServerhop = state
     saveSettings()
  end)
 
 --auto trinkets fim
- botedsection:addToggle("Auto Pickup (fim)",nil,function(state)
+ botedsection:NewToggle("Auto Pickup (fim)","nil",function(state)
     ConfigTable.AutoTrinkets = state
     saveSettings()
  end)
 --server hop
-botedsection:addButton("Server Hop", function()
+botedsection:NewButton("Server Hop","", function()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
  end)
 --export file name
-filesection:addTextbox("Export File Name", "ENTER HERE FILE NAME", function(txt)
+filesection:NewTextBox("Export File Name", "FILE NAME", function(txt)
     savename = txt
     print(savename)
     saveSettings()
 end)
 --import file name
-filesection:addTextbox("Import File Name", "ENTER HERE FILE NAME", function(txt)
+filesection:NewTextBox("Import File Name", "FILE NAME", function(txt)
     bottxtimport = txt
     print(savename)
     saveSettings()
 end)
 --export file button
-filesection:addButton("Export bot file", function(txt)
+filesection:NewButton("Export bot file","",function(txt)
     writefile(tostring(savename)..".txt","")
     for i , v in pairs(posi)do
         if i == #posi - 0 then 
@@ -187,7 +187,7 @@ filesection:addButton("Export bot file", function(txt)
     saveSettings()
 end)
 --import file bot config
-filesection:addButton("Import Bot file",function(txt)
+filesection:NewButton("Import Bot file","",function(txt)
     posi = {}
     local file = readfile(tostring(bottxtimport)..".txt")
     for word in string.gmatch(file, '([^a]+)') do
@@ -198,6 +198,37 @@ filesection:addButton("Import Bot file",function(txt)
     end
     saveSettings()
 end)
-Window:SelectPage(Library.pages[1], true)
---save settings on join
-saveSettings()
+--auto loop farm
+game:GetService("RunService").RenderStepped:Connect(function()
+	if ConfigTable.IsLooped then
+		if not launched then
+            launched = true
+            wait(loopspeed)
+            farm()
+        end
+	end
+end)
+local deb = false
+--loop for server hop bot (momo was here :p)
+game:GetService("RunService").RenderStepped:Connect(function()
+	if ConfigTable.ServerHopPos and not deb then
+        if not launched then
+            deb = true
+            farm()
+        end
+    end
+end)
+
+--auto pickup trinkets
+game:GetService("RunService").RenderStepped:Connect(function()
+	if ConfigTable.AutoTrinkets then
+        for i,v in pairs(game:GetService("Workspace").Trinkets:GetDescendants())do
+            if v.ClassName == "ClickDetector" then
+                local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                if distance < 13 then
+                    fireclickdetector(v)
+                end
+            end
+        end
+	end
+end)
