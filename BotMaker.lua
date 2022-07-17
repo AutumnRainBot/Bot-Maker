@@ -144,20 +144,20 @@ botedsection:NewButton("Clear All Position","",function()
     saveSettings()
 end)
 --loop
-botedsection:NewToggle("Loop Bot (Single Server)", "", function(state)
+paramssection:NewToggle("Loop Bot (Single Server)", "", function(state)
    ConfigTable.IsLooped = state
    saveSettings()
 end)
 
 --server hop mode
-botedsection:NewToggle("Bot Then Server Hop","nil",function(state)
+paramssection:NewToggle("Bot Then Server Hop (Multiple Server)","nil",function(state)
     ConfigTable.ServerHopPos = state
     ConfigTable.canServerhop = state
     saveSettings()
  end)
 
 --auto trinkets fim
- botedsection:NewToggle("Auto Pickup (fim)","nil",function(state)
+paramssection:NewToggle("Auto Pickup (fim)","nil",function(state)
     ConfigTable.AutoTrinkets = state
     saveSettings()
  end)
