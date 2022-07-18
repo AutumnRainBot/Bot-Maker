@@ -159,16 +159,16 @@ function farm()
     --Tween the player to the position
     if posi ~= nil then--check if there is a position table
         for i , v in pairs(posi)do--loop through the table
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true--anchor the character
+            --game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true--anchor the character
             if type(v) =="string" then--check if the value is a string
             tweenplayer(CFrame.new(unpack(v:split(", "))))--if it is a string, convert it to a table and tween the player
             else
                 tweenplayer(CFrame.new(v))--if it is not a string, tween the player
                 wait(ConfigTable.WaitTime)--obviously wait before next position
-                game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character
+                --game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character
             end
             wait(ConfigTable.WaitTime)--obviously wait before next position
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character in case of error
+            --game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character in case of error
         end
     end
     if ConfigTable.canServerhop then--here we check if the bot can serverhop (we used the toggle button)
