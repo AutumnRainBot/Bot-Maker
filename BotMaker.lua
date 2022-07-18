@@ -69,6 +69,11 @@ function loadSettings()
         for word in string.gmatch(file, '([^a]+)') do
             table.insert(posi,(word))
         end
+        LoopSingleToggle:Set(ConfigTable.IsLooped)
+        ServerHopToggle:Set(ConfigTable.canServerhop)
+        TweenSpeedSlider:Set(ConfigTable.TweenSpeed)
+        LoopSpeedSlider:Set(ConfigTable.LoopSpeed)
+        WaitTimeSlider:Set(ConfigTable.WaitTime)
         print("Loaded config")
     else
         print("Error while loading config")
@@ -100,7 +105,7 @@ loadSettings()
 --// sliders //--
 
 --wait between
-paramssection:AddSlider({
+local WaitTimeSlider = paramssection:AddSlider({
 	Name = "Wait Time Position",
 	Min = 0,
 	Max = 20,
@@ -115,7 +120,7 @@ paramssection:AddSlider({
     
 
 --loop speed
-paramssection:AddSlider({
+local LoopSpeedSlider = paramssection:AddSlider({
 	Name = "Loop Speed",
 	Min = 0,
 	Max = 45,
@@ -128,7 +133,7 @@ paramssection:AddSlider({
 	end    
 })
 --tween speed 
-paramssection:AddSlider({
+local TweenSpeedSlider = paramssection:AddSlider({
 	Name = "Tween Speed",
 	Min = 0,
 	Max = 750,
@@ -214,7 +219,7 @@ botedsection:AddButton({
 
 --// toggles //--
 --loop bot single server
-ToggleSection:AddToggle({
+local LoopSingleToggle = ToggleSection:AddToggle({
 	Name = "Loop Bot (Single Server)",
 	Default = false,
 	Callback = function(state)
@@ -224,7 +229,7 @@ ToggleSection:AddToggle({
 })
 
 --server hop mode
-ToggleSection:AddToggle({
+local ServerHopToggle = ToggleSection:AddToggle({
 	Name = "Bot Then Server Hop (Multiple Server)",
 	Default = false,
 	Callback = function(state)
