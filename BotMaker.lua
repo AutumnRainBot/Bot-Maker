@@ -1,25 +1,43 @@
 repeat wait() until game:IsLoaded()
 wait(2)
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Bot Maker Universal", colors)
-local colors = {
-    SchemeColor = Color3.fromRGB(0,255,255),
-    Background = Color3.fromRGB(0, 0, 0),
-    Header = Color3.fromRGB(0, 0, 0),
-    TextColor = Color3.fromRGB(255,255,255),
-    ElementColor = Color3.fromRGB(20, 20, 20)
-    }
+local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = Library:MakeWindow({Name = "Bot Maker Universal", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
 --Page
-local main = Window:NewTab("Main")
-local boted = Window:NewTab("Bot")
-local FileSave = Window:NewTab("Save File")
+local main = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+local boted = Window:MakeTab({
+	Name = "Bot",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+local FileSave = Window:MakeTab({
+	Name = "Save File",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 --Section
-local mainsection = main:NewSection("Bot Maker Made By Momo.#2706")
-local botedsection = boted:NewSection("Make your own auto farm bot")
-local ToggleSection = boted:NewSection("Toggles Options")
-local paramssection = boted:NewSection("Parameters")
-local filesection = FileSave:NewSection("Files Configurations")
-local subFilesSection = FileSave:NewSection("Import / Export Bot Files")
+local mainsection = main:AddSection({
+	Name = "Bot Maker Universal Made By Momo.#2706",
+})
+local botedsection = boted:AddSection({
+	Name = "Make your own auto farm bot",
+})
+local ToggleSection = boted:AddSection({
+	Name = "Toggles options",
+})
+local paramssection = boted:AddSection({
+	Name = "Parameters",
+})
+local filesection = FileSave:AddSection({
+	Name = "Files Configurations",
+})
+local subFilesSection = FileSave:AddSection({
+	Name = "Import / Export Bot Files",
+})
 --constants
 local savename = "exported bot config"
 local bottxtimport = nil
@@ -82,17 +100,46 @@ loadSettings()
 --// sliders //--
 
 --wait between
-paramssection:NewSlider("Wait time position","", 45, 1, function(s)
-    ConfigTable.WaitTime = s
-end)
+paramssection:AddSlider({
+	Name = "Wait Time Position",
+	Min = 0,
+	Max = 20,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Secondes",
+	Callback = function(s)
+		ConfigTable.WaitTime = s
+	end    
+})
+    
+
 --loop speed
-paramssection:NewSlider("Loop speed","", 45, 1, function(s)
-    ConfigTable.LoopSpeed = s
-end)
+paramssection:AddSlider({
+	Name = "Loop Speed",
+	Min = 0,
+	Max = 45,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Secondes",
+	Callback = function(s)
+		ConfigTable.LoopSpeed = s
+	end    
+})
 --tween speed 
-paramssection:NewSlider("Tween Speed","", 750, 1, function(s)
-    ConfigTable.TweenSpeed = s
-end)
+paramssection:AddSlider({
+	Name = "Tween Speed",
+	Min = 0,
+	Max = 750,
+	Default = 200,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Secondes",
+	Callback = function(s)
+		ConfigTable.TweenSpeed = s
+	end    
+})
 
 --// functions //--
 function servhop()
@@ -131,75 +178,112 @@ end
 
 --// buttons //--
 --save position    
-botedsection:NewButton("Save Position","",function()
-    local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position --take our current position
-    table.insert(posi,pos)--save it into a table
-    saveSettings()--save the table into a table that will be saved into a file later
-end)
+botedsection:AddButton({
+	Name = "Save Position",
+	Callback = function()
+        local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position --take our current position
+        table.insert(posi,pos)--save it into a table
+        saveSettings()--save the table into a table that will be saved into a file later
+  	end    
+})
 --start bot
-botedsection:NewButton("Load Position","",function()
-    if not launched then --check because if not we could just spam load position and it goes crazy x)
-    saveSettings()--in case of error while saving config
-    farm()--actual bot function that tween our position
-    end
-end)
+botedsection:AddButton({
+	Name = "Load Position",
+	Callback = function()
+        if not launched then --check because if not we could just spam load position and it goes crazy x)
+            saveSettings()--in case of error while saving config
+            farm()--actual bot function that tween our position
+        end
+  	end    
+})
 --remove all position
-botedsection:NewButton("Clear All Position","",function()
-    posi = {}--clearing table position (main table)
-    saveSettings()--save to config table our choice so we can load it later because we clear the table
-end)
+botedsection:AddButton({
+	Name = "Remove All Positions",
+	Callback = function()
+        posi = {}--clearing table position (main table)
+        saveSettings()--save to config table our choice so we can load it later because we clear the table
+  	end    
+})
 --server hop
-botedsection:NewButton("Server Hop","", function()
-    game:GetService("TeleportService"):Teleport(game.PlaceId)
- end)
+botedsection:AddButton({
+	Name = "Server Hop",
+	Callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId)
+  	end    
+})
 
 --// toggles //--
 --loop bot single server
-ToggleSection:NewToggle("Loop Bot (Single Server)", "", function(state)
-   ConfigTable.IsLooped = state--toggle to loop bot (checked in the farm function)
-   saveSettings()--save to config table our choice so we can load it later
-end)
+ToggleSection:AddToggle({
+	Name = "Loop Bot (Single Server)",
+	Default = false,
+	Callback = function(state)
+		ConfigTable.IsLooped = state--toggle to loop bot (checked in the farm function)
+        saveSettings()--save to config table our choice so we can load it later
+	end    
+})
 
 --server hop mode
-ToggleSection:NewToggle("Bot Then Server Hop (Multiple Server)","nil",function(state)
-    ConfigTable.ServerHopPos = state--if this toggle on => set to the config table (farm fuction check if we checking it to server hop or not)
-    ConfigTable.canServerhop = state--same here ,i just could do juste one of them but i prefer to do both
-    saveSettings()--save to config table our choice so we can load it later
- end)
+ToggleSection:AddToggle({
+	Name = "Bot Then Server Hop (Multiple Server)",
+	Default = false,
+	Callback = function(state)
+		ConfigTable.ServerHopPos = state--if this toggle on => set to the config table (farm fuction check if we checking it to server hop or not)
+        ConfigTable.canServerhop = state--same here ,i just could do juste one of them but i prefer to do both
+        saveSettings()--save to config table our choice so we can load it later
+	end    
+})
 
 --export file name
-filesection:NewTextBox("Export File Name", "FILE NAME", function(txt)
-    savename = txt--set the name of the file to export
-    saveSettings()
-end)
+filesection:AddTextbox({
+	Name = "Export File Name",
+	Default = "Bot File Name Here",
+	TextDisappear = true,
+	Callback = function(txt)
+		savename = txt--set the name of the file to export
+        saveSettings()
+	end	  
+})
 --import file name
-filesection:NewTextBox("Import File Name", "FILE NAME", function(txt)
-    bottxtimport = txt--set the name of the file to import
-    saveSettings()
-end)
+filesection:AddTextbox({
+	Name = "Import File Name",
+	Default = "Bot File Name Here",
+	TextDisappear = true,
+	Callback = function(txt)
+		bottxtimport = txt--set the name of the file to import
+        saveSettings()
+	end	  
+})
 --export file button
-subFilesSection:NewButton("Export bot file","",function(txt)
-    writefile(tostring(savename)..".json","")--creating a file with the name we choosed
-    for i , v in pairs(posi)do --writing the position table in the file
-        if i == #posi - 0 then --if it is the last position
-            appendfile(tostring(savename)..".json",tostring(v).."a")--adding the position to the file without a jumping line
-            else
-            appendfile(tostring(savename)..".json",tostring(v).."a".."\n")--adding the position to the file
+subFilesSection:AddButton({
+	Name = "Export Bot File",
+	Callback = function()
+        writefile(tostring(savename)..".json","")--creating a file with the name we choosed
+        for i , v in pairs(posi)do --writing the position table in the file
+            if i == #posi - 0 then --if it is the last position
+                appendfile(tostring(savename)..".json",tostring(v).."a")--adding the position to the file without a jumping line
+                else
+                appendfile(tostring(savename)..".json",tostring(v).."a".."\n")--adding the position to the file
+            end
         end
-    end
-    print("Exported "..tostring(savename)..".json successfully")--debugging print
-    saveSettings()--saving the config cuz we changed it
-end)
+        print("Exported "..tostring(savename)..".json successfully")--debugging print
+        saveSettings()--saving the config cuz we changed it
+  	end    
+})
+
 --import file bot config
-subFilesSection:NewButton("Import Bot file","",function(txt)
-    posi = {}--cleaing position table
-    local file = readfile(tostring(bottxtimport)..".json")--reading our bot path file
-    for word in string.gmatch(file, '([^a]+)') do -- loop in the file txt and split line every time it finds a "a"
-        table.insert(posi,(word))--instert the position into the main table
-    end
-    print("Imported "..tostring(bottxtimport)..".json successfully")--debug print
-    saveSettings()--save the fact we closed the button to save posi table
-end)
+subFilesSection:AddButton({
+	Name = "Import Bot File",
+	Callback = function()
+        posi = {}--cleaing position table
+        local file = readfile(tostring(bottxtimport)..".json")--reading our bot path file
+        for word in string.gmatch(file, '([^a]+)') do -- loop in the file txt and split line every time it finds a "a"
+            table.insert(posi,(word))--instert the position into the main table
+        end
+        print("Imported "..tostring(bottxtimport)..".json successfully")--debug print
+        saveSettings()--save the fact we closed the button to save posi table
+  	end    
+})
 --auto loop farm
 game:GetService("RunService").RenderStepped:Connect(function()
 	if ConfigTable.IsLooped then
@@ -222,3 +306,4 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 game.StarterGui:SetCore("SendNotification", {Title = "BOT MAKER";Text = "Loaded!";Duration = 3;})
+OrionLib:Init()--init the library
