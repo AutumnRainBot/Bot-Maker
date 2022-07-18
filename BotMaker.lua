@@ -107,6 +107,7 @@ paramssection:AddSlider({
 	ValueName = "Secondes",
 	Callback = function(s)
 		ConfigTable.WaitTime = s
+        saveSettings()
 	end    
 })
     
@@ -122,6 +123,7 @@ paramssection:AddSlider({
 	ValueName = "Secondes",
 	Callback = function(s)
 		ConfigTable.LoopSpeed = s
+        saveSettings()
 	end    
 })
 --tween speed 
@@ -135,11 +137,13 @@ paramssection:AddSlider({
 	ValueName = "Secondes",
 	Callback = function(s)
 		ConfigTable.TweenSpeed = s
+        saveSettings()
 	end    
 })
 
 --// functions //--
 function servhop()
+    saveSettings()
     game:GetService("TeleportService"):Teleport(game.PlaceId)
 end
 --main functions
