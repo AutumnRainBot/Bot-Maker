@@ -1,12 +1,13 @@
 repeat wait() until game:IsLoaded()
 wait(2)
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = Library:MakeWindow({Name = "Bot Maker Universal", HidePremium = false, SaveConfig = false, ConfigFolder = "Orion"})
+local Window = Library:MakeWindow({Name = "Bot Maker Universal", HidePremium = false, SaveConfig = true, ConfigFolder = "Orion",IntroEnabled = true,IntroText = "Bot Maker Universal"})
+
 
 --Page
 local main = Window:MakeTab({
 	Name = "Main",
-	Icon = "rbxassetid://4483345998",
+	Icon = "rbxassetid://10273384260",
 	PremiumOnly = false
 })
 local boted = Window:MakeTab({
@@ -16,7 +17,7 @@ local boted = Window:MakeTab({
 })
 local FileSave = Window:MakeTab({
 	Name = "Save File",
-	Icon = "rbxassetid://4483345998",
+	Icon = "rbxassetid://10273323105",
 	PremiumOnly = false
 })
 --Section
@@ -56,6 +57,18 @@ local ConfigTable = {
     TweenSpeed = 200,
     LoopSpeed = 1,
 }
+--for rogue lineage here
+if game.PlaceId == 5208655184 then
+    if not game.Players.LocalPlayer.Character then
+        local start_menu = player.PlayerGui:WaitForChild("StartMenu", 5)
+        firesignal(start_menu:WaitForChild("Choices"):WaitForChild("Play").MouseButton1Click)
+    end
+end
+
+
+
+
+
 --load config function
 function loadSettings()
     print("Loading config")
@@ -154,7 +167,7 @@ function farm()
         --basic of tweening function for player only
         TweenPlayer = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(((cframe.p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)/ConfigTable.TweenSpeed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false), {CFrame = cframe})
         TweenPlayer:Play()
-        TweenPlayer.Completed:Wait() wait(1)--wait for tween to finish
+        TweenPlayer.Completed:Wait() wait()--wait for tween to finish
     end
     --Tween the player to the position
     if posi ~= nil then--check if there is a position table
@@ -306,5 +319,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
     end
 end)
-game.StarterGui:SetCore("SendNotification", {Title = "BOT MAKER";Text = "Loaded!";Duration = 3;})
+Library:MakeNotification({
+	Name = "Bot Maker",
+	Content = "Successfully Loaded",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
 Library:Init()--init the library
