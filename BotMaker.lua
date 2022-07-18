@@ -101,7 +101,7 @@ paramssection:AddSlider({
 	Name = "Wait Time Position",
 	Min = 0,
 	Max = 20,
-	Default = 0,
+	Default = ConfigTable.WaitTime,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Secondes",
@@ -116,7 +116,7 @@ paramssection:AddSlider({
 	Name = "Loop Cooldown",
 	Min = 0,
 	Max = 45,
-	Default = 0,
+	Default = ConfigTable.LoopSpeed,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Secondes",
@@ -129,7 +129,7 @@ paramssection:AddSlider({
 	Name = "Tween Speed",
 	Min = 0,
 	Max = 750,
-	Default = 200,
+	Default = ConfigTable.TweenSpeed,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Secondes",
@@ -211,7 +211,7 @@ botedsection:AddButton({
 
 --// toggles //--
 --loop bot single server
-local LoopSingleToggle = ToggleSection:AddToggle({
+ToggleSection:AddToggle({
 	Name = "Loop Bot (Single Server)",
 	Default = ConfigTable.IsLooped,
 	Callback = function(state)
@@ -221,7 +221,7 @@ local LoopSingleToggle = ToggleSection:AddToggle({
 })
 
 --server hop mode
-local ServerHopToggle = ToggleSection:AddToggle({
+ToggleSection:AddToggle({
 	Name = "Bot Then Server Hop (Multiple Server)",
 	Default = ConfigTable.ServerHopPos,
 	Callback = function(state)
