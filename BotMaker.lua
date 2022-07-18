@@ -1,7 +1,7 @@
 repeat wait() until game:IsLoaded()
 wait(2)
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = Library:MakeWindow({Name = "Bot Maker Universal", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Window = Library:MakeWindow({Name = "Bot Maker Universal", HidePremium = false, SaveConfig = false, ConfigFolder = "Orion"})
 
 --Page
 local main = Window:MakeTab({
@@ -45,7 +45,6 @@ local launched = false
 local loopspeed = 2 
 local posi = {}
 local TweenPlayer
-
 --config for save and load file temp pos file
 local file_name = "config.json"
 --basic table for saving config
@@ -69,11 +68,6 @@ function loadSettings()
         for word in string.gmatch(file, '([^a]+)') do
             table.insert(posi,(word))
         end
-        LoopSingleToggle:Set(ConfigTable.IsLooped)
-        ServerHopToggle:Set(ConfigTable.canServerhop)
-        TweenSpeedSlider:Set(ConfigTable.TweenSpeed)
-        LoopSpeedSlider:Set(ConfigTable.LoopSpeed)
-        WaitTimeSlider:Set(ConfigTable.WaitTime)
         print("Loaded config")
     else
         print("Error while loading config")
@@ -99,13 +93,11 @@ function saveSettings()
         else
             print("Error while saving config")
     end
+    print("Saved config")
 end
---load config function
 loadSettings()
---// sliders //--
-
 --wait between
-local WaitTimeSlider = paramssection:AddSlider({
+paramssection:AddSlider({
 	Name = "Wait Time Position",
 	Min = 0,
 	Max = 20,
@@ -120,8 +112,8 @@ local WaitTimeSlider = paramssection:AddSlider({
     
 
 --loop speed
-local LoopSpeedSlider = paramssection:AddSlider({
-	Name = "Loop Speed",
+paramssection:AddSlider({
+	Name = "Loop Cooldown",
 	Min = 0,
 	Max = 45,
 	Default = 0,
@@ -133,7 +125,7 @@ local LoopSpeedSlider = paramssection:AddSlider({
 	end    
 })
 --tween speed 
-local TweenSpeedSlider = paramssection:AddSlider({
+paramssection:AddSlider({
 	Name = "Tween Speed",
 	Min = 0,
 	Max = 750,
@@ -221,7 +213,7 @@ botedsection:AddButton({
 --loop bot single server
 local LoopSingleToggle = ToggleSection:AddToggle({
 	Name = "Loop Bot (Single Server)",
-	Default = false,
+	Default = ConfigTable.IsLooped,
 	Callback = function(state)
 		ConfigTable.IsLooped = state--toggle to loop bot (checked in the farm function)
         saveSettings()--save to config table our choice so we can load it later
@@ -231,7 +223,7 @@ local LoopSingleToggle = ToggleSection:AddToggle({
 --server hop mode
 local ServerHopToggle = ToggleSection:AddToggle({
 	Name = "Bot Then Server Hop (Multiple Server)",
-	Default = false,
+	Default = ConfigTable.ServerHopPos,
 	Callback = function(state)
 		ConfigTable.ServerHopPos = state--if this toggle on => set to the config table (farm fuction check if we checking it to server hop or not)
         ConfigTable.canServerhop = state--same here ,i just could do juste one of them but i prefer to do both
@@ -311,4 +303,4 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 game.StarterGui:SetCore("SendNotification", {Title = "BOT MAKER";Text = "Loaded!";Duration = 3;})
-OrionLib:Init()--init the library
+Library:Init()--init the library
