@@ -67,8 +67,6 @@ end
 
 
 
-
-
 --load config function
 function loadSettings()
     print("Loading config")
