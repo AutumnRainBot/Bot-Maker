@@ -2,12 +2,10 @@ repeat wait() until game:IsLoaded()
 wait(2)
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = Library:MakeWindow({Name = "Bot Maker Universal", HidePremium = false, SaveConfig = true, ConfigFolder = "Orion",IntroEnabled = true,IntroText = "Bot Maker Universal"})
-
-
 --Page
 local main = Window:MakeTab({
 	Name = "Main",
-	Icon = "rbxassetid://10273384260",
+	Icon = "rbxassetid://1472442241",
 	PremiumOnly = false
 })
 local boted = Window:MakeTab({
@@ -17,7 +15,7 @@ local boted = Window:MakeTab({
 })
 local FileSave = Window:MakeTab({
 	Name = "Save File",
-	Icon = "rbxassetid://10273323105",
+	Icon = "rbxassetid://7276823341",
 	PremiumOnly = false
 })
 --Section
@@ -53,7 +51,7 @@ local ConfigTable = {
     IsLooped = false,
     canServerhop = false,
     ServerHopPos = false,
-    WaitTime = 0,
+    WaitTime = 1,
     TweenSpeed = 200,
     LoopSpeed = 1,
 }
@@ -64,9 +62,9 @@ if game.PlaceId == 5208655184 then
         firesignal(start_menu:WaitForChild("Choices"):WaitForChild("Play").MouseButton1Click)
     end
 end
-
-
-
+--here for some other game for the future
+--//
+--//
 --load config function
 function loadSettings()
     print("Loading config")
@@ -121,8 +119,6 @@ paramssection:AddSlider({
         saveSettings()
 	end    
 })
-    
-
 --loop speed
 paramssection:AddSlider({
 	Name = "Loop Cooldown",
@@ -151,7 +147,6 @@ paramssection:AddSlider({
         saveSettings()
 	end    
 })
-
 --// functions //--
 function servhop()
     saveSettings()
@@ -187,7 +182,6 @@ function farm()
     end
     launched = false--set the bot to not launched so we can now press the button again
 end
-
 --// buttons //--
 --save position    
 botedsection:AddButton({
@@ -282,7 +276,6 @@ subFilesSection:AddButton({
         saveSettings()--saving the config cuz we changed it
   	end    
 })
-
 --import file bot config
 subFilesSection:AddButton({
 	Name = "Import Bot File",
