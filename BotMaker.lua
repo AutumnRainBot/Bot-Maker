@@ -28,6 +28,9 @@ local botedsection = boted:AddSection({
 local ToggleSection = boted:AddSection({
 	Name = "Toggles options",
 })
+local additionalSection = boted:AddSection({
+    Name = "Additional",
+})
 local paramssection = boted:AddSection({
 	Name = "Parameters",
 })
@@ -38,7 +41,7 @@ local subFilesSection = FileSave:AddSection({
 	Name = "Import / Export Bot Files",
 })
 --constants
-local savename = "exported bot config"
+local savename = "exported bot"
 local bottxtimport = nil
 local launched = false
 local loopspeed = 2 
@@ -51,6 +54,7 @@ local ConfigTable = {
     IsLooped = false,
     canServerhop = false,
     ServerHopPos = false,
+    autoFireClick = false,
     WaitTime = 1,
     TweenSpeed = 200,
     LoopSpeed = 1,
@@ -239,6 +243,14 @@ ToggleSection:AddToggle({
         saveSettings()--save to config table our choice so we can load it later
 	end    
 })
+additionalSection:AddToggle({
+    Name = "Auto Fire The Closest Fire Click Detector",
+    Default = ConfigTable.autoFireClick,
+    Callback = function(state)
+        ConfigTable.autoFireClick = state--if this toggle on => set to the config table (farm fuction check if we checking it to server hop or not)
+        saveSettings()--save to config table our choice so we can load it later
+    end    
+})
 
 --export file name
 filesection:AddTextbox({
@@ -290,14 +302,16 @@ subFilesSection:AddButton({
   	end    
 })
 --auto loop farm
-game:GetService("RunService").RenderStepped:Connect(function()
-	if ConfigTable.IsLooped then
-		if not launched then
-            launched = true
-            wait(ConfigTable.LoopSpeed)
-            farm()
+pcall(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if ConfigTable.IsLooped then
+            if not launched then
+                launched = true
+                wait(ConfigTable.LoopSpeed)
+                farm()
+            end
         end
-	end
+    end)
 end)
 local deb = false
 --loop for server hop bot (momo was here :p)
@@ -310,6 +324,23 @@ game:GetService("RunService").RenderStepped:Connect(function()
         end
     end
 end)
+--//Auto Fire Click Detector//--
+pcall(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if ConfigTable.autoFireClick then
+            for i,v in pairs(game:GetService("Workspace"):GetDescendants())do
+                if v.ClassName == "ClickDetector" and v.Parent.ClassName ~="Model" then
+                    local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                    if distance < 13 then
+                        fireclickdetector(v)
+                    end
+                end
+            end
+        wait(0.25)
+        end
+    end)
+end)
+
 Library:MakeNotification({
 	Name = "Bot Maker",
 	Content = "Successfully Loaded",
