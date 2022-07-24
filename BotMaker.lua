@@ -58,6 +58,7 @@ local ConfigTable = {
     WaitTime = 1,
     TweenSpeed = 200,
     LoopSpeed = 1,
+    AutoClicker = false,
 }
 --for rogue lineage here
 if game.PlaceId == 5208655184 then
@@ -251,6 +252,14 @@ additionalSection:AddToggle({
         saveSettings()--save to config table our choice so we can load it later
     end    
 })
+additionalSection:AddToggle({
+    Name = "Auto Clicker",
+    Default = ConfigTable.AutoClicker,
+    Callback = function(state)
+        ConfigTable.AutoClicker = state--if this toggle on => set to the config table (farm fuction check if we checking it to server hop or not)
+        saveSettings()--save to config table our choice so we can load it later
+    end    
+})
 
 --export file name
 filesection:AddTextbox({
@@ -313,8 +322,18 @@ pcall(function()
         end
     end)
 end)
+pcall(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if ConfigTable.AutoClicker then
+            mouse1click()
+            wait()
+            end
+        end
+    end)
+end)
+
 local deb = false
---loop for server hop bot (momo was here :p)
+--loop for server hop bot (LGDMorgan was here :p)
 game:GetService("RunService").RenderStepped:Connect(function()
 	if ConfigTable.ServerHopPos and not deb then
         if not launched then
