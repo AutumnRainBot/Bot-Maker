@@ -1,0 +1,41 @@
+How to use bot maker universal | SYAPSE X ONLY By Momo.#2706 :p
+
+//How to save position and load position
+
+Press button (Save Position) to save different position for your bot
+
+Press button (Load Position) to fly (tween) between the position you saved before
+
+Press button (Clear All Position) to delete all the previous position you saved
+
+//Parameters
+
+Loop bot (single server) = Loop through all your position saved (no server-hop) infinitly until you stop it (play all your position then repeat)
+
+Bot Then Server Hop = Loop through all your position then server hop (play all your position then server hop then repeat)
+
+Server Hop = make you change server
+
+//Real Parameters
+
+Wait Time Position = the time it will wait between each position
+
+Loop Speed = The time it will wait eachtime it finish looping through all your position before restart again
+
+Tween Speed = The speed you will be during flying between each position
+
+//Config And Save File and Export File
+
+Export File Name = the name for your bot file
+
+Import File Name = Has to be the name of the bot file you want to use 
+
+Export bot File = press it to export all the position you saved into a .json file to share your bot with everyone
+
+Import Bot File = press it after when u put the name of the bot file you want to use into the text box
+
+ALL the bot file , config and other can be found in the folder workspace of your synapse 
+
+PRESS ENTER AFTER TYPING THE NAME OF THE CONFIG YOU WANT TO IMPORT OR EXPORT OR THE SCRIPT WILL NOT UNDERSTAND THAT YOU ENTRED TEXT
+
+Note : for the server-hop functionality to work you need to put the script in your synapse auto execute folder :p
