@@ -44,7 +44,6 @@ local subFilesSection = FileSave:AddSection({
 local savename = "exported bot"
 local bottxtimport = nil
 local launched = false
-local loopspeed = 2 
 local posi = {}
 local TweenPlayer
 --config for save and load file temp pos file
