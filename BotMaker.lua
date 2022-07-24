@@ -111,7 +111,7 @@ end
 loadSettings()
 --wait between
 paramssection:AddSlider({
-	Name = "Wait Time Position",
+	Name = "Wait Time Between Position",
 	Min = 0,
 	Max = 20,
 	Default = ConfigTable.WaitTime,
@@ -172,12 +172,12 @@ function farm()
             --game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true--anchor the character
             if type(v) =="string" then--check if the value is a string
             tweenplayer(CFrame.new(unpack(v:split(", "))))--if it is a string, convert it to a table and tween the player
+            wait(ConfigTable.WaitTime)--obviously wait before next position
             else
                 tweenplayer(CFrame.new(v))--if it is not a string, tween the player
                 wait(ConfigTable.WaitTime)--obviously wait before next position
                 --game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character
             end
-            wait(ConfigTable.WaitTime)--obviously wait before next position
             --game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false--unanchor the character in case of error
         end
     end
