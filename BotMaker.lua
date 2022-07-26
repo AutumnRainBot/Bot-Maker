@@ -326,7 +326,6 @@ pcall(function()
         if ConfigTable.AutoClicker then
             mouse1click()
             wait()
-            end
         end
     end)
 end)
