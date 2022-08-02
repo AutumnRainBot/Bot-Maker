@@ -5,17 +5,17 @@ local Window = Library:MakeWindow({Name = "Bot Maker Universal", HidePremium = f
 --Page
 local main = Window:MakeTab({
 	Name = "Main",
-	Icon = "rbxassetid://1472442241",
+	Icon = "rbxassetid://7072717697",
 	PremiumOnly = false
 })
 local boted = Window:MakeTab({
 	Name = "Bot",
-	Icon = "rbxassetid://4483345998",
+	Icon = "rbxassetid://7072718266",
 	PremiumOnly = false
 })
 local FileSave = Window:MakeTab({
 	Name = "Save File",
-	Icon = "rbxassetid://7276823341",
+	Icon = "rbxassetid://7072716017",
 	PremiumOnly = false
 })
 --Section
