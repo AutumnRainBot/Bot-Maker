@@ -342,14 +342,18 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 --//Auto Fire Click Detector//--
+local debed = false
 pcall(function()
     game:GetService("RunService").RenderStepped:Connect(function()
-        if ConfigTable.autoFireClick then
+        if ConfigTable.autoFireClick and not debed then
+            debed = true
             for i,v in pairs(game:GetService("Workspace"):GetDescendants())do
                 if v.ClassName == "ClickDetector" and v.Parent.ClassName ~="Model" then
                     local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
                     if distance < 13 then
+                        wait(0.25)
                         fireclickdetector(v)
+                        debed = false
                     end
                 end
             end
