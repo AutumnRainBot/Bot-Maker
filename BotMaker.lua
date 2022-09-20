@@ -321,14 +321,7 @@ pcall(function()
         end
     end)
 end)
-pcall(function()
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if ConfigTable.AutoClicker then
-            mouse1click()
-            wait()
-        end
-    end)
-end)
+
 
 local deb = false
 --loop for server hop bot (LGDMorgan was here :p)
@@ -342,26 +335,22 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 --//Auto Fire Click Detector//--
-local debed = false
+
 pcall(function()
     game:GetService("RunService").RenderStepped:Connect(function()
-        if ConfigTable.autoFireClick and not debed then
-            debed = true
-            for i,v in pairs(game:GetService("Workspace"):GetDescendants())do
-                if v.ClassName == "ClickDetector" and v.Parent.ClassName ~="Model" then
-                    local distance = (v.Parent.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+        if ConfigTable.autoFireClick then
+            for i,v in pairs(game:GetService("Workspace"):GetChildren())do
+                if v.Name == "Part" and v:FindFirstChild("ID") then
+                    local distance = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
                     if distance < 13 then
                         wait(0.25)
-                        fireclickdetector(v)
-                        debed = false
+                        fireclickdetector(v.Part.ClickDetector)
                     end
                 end
             end
-        wait(0.25)
         end
     end)
 end)
-
 Library:MakeNotification({
 	Name = "Bot Maker",
 	Content = "Successfully Loaded",
